@@ -110,9 +110,11 @@
                                      sexp))))
 
 (defmacro trivial-positional-lambda (body)
-  `(lambda (&optional % %%)
-     (declare (ignorable %) (ignorable %%))
-     ,body))
+  (let ((% (intern "%"))
+        (%% (intern "%%")))
+    `(lambda (&optional ,% ,%%)
+       (declare (ignorable ,%) (ignorable ,%%))
+       ,body)))
 
 (defun |#/-reader| (stream char arg)
   "Literal syntax for raw strings (which don't need escapin of control chars).
